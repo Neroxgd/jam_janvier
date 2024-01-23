@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Chatouille",
+                    "type": "Button",
+                    "id": "70792dad-4b6a-4114-aeba-de0ed3f8c3c1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -112,7 +121,7 @@
                 {
                     "name": "",
                     "id": "ef46e2be-016a-4dee-bac8-b0e534a399fd",
-                    "path": "<Keyboard>/f",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -123,11 +132,22 @@
                 {
                     "name": "",
                     "id": "31eb7fd3-3ada-48af-beae-1a7af09c343d",
-                    "path": "<Keyboard>/f",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Jeter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "34f14992-6184-427a-ad2d-454732e0f162",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chatouille",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -172,6 +192,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Chatouille",
+                    "type": "Button",
+                    "id": "7d9b83b8-b286-45e6-8d3d-1afc2a835a16",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -260,6 +289,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jeter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d12ed46f-29e8-479f-aa72-d1e16f6ec82b",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chatouille",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

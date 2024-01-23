@@ -290,11 +290,11 @@ Transform:
   m_GameObject: {fileID: 325856865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.28, z: 0}
-  m_LocalScale: {x: 21.194706, y: 0.71716, z: 23.0746}
+  m_LocalScale: {x: 22, y: 1, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
@@ -381,14 +381,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: -0, y: 3.3, z: -12.73}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: -0, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,7 +526,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
@@ -678,7 +678,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 595732122}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7, y: 0.64, z: -0.423608}
+  m_LocalPosition: {x: 1.7, y: -0.08, z: -0.423608}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -708,12 +708,12 @@ PrefabInstance:
     - target: {fileID: 3945168428789819356, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: m_Name
-      value: Player2
+      value: Player 2
       objectReference: {fileID: 0}
     - target: {fileID: 4981626419762573146, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4981626419762573146, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
@@ -768,7 +768,7 @@ PrefabInstance:
     - target: {fileID: 7738387242926960770, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7738387242926960770, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
@@ -810,11 +810,33 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[7].m_ActionName
       value: Player 2/Jeter[/XInputControllerWindows/buttonEast]
       objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: otherPlayer
+      value: 
+      objectReference: {fileID: 2058502254}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: chatouilleBarre
+      value: 
+      objectReference: {fileID: 1298914032}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: def6c347db22d4347b9578a74081e2fc, type: 3}
+--- !u!114 &826275637 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 645056883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc115dd5822aee4ebdbdeafdb2497e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +884,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &850924711
 GameObject:
@@ -1183,7 +1205,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1259,7 +1281,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1453,6 +1475,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2058502254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+    type: 3}
+  m_PrefabInstance: {fileID: 6320590190340753629}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc115dd5822aee4ebdbdeafdb2497e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6320590190340753629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1469,7 +1503,7 @@ PrefabInstance:
     - target: {fileID: 4981626419762573146, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4981626419762573146, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
@@ -1479,7 +1513,7 @@ PrefabInstance:
     - target: {fileID: 4981626419762573146, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.87
+      value: -0.08
       objectReference: {fileID: 0}
     - target: {fileID: 4981626419762573146, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
@@ -1531,6 +1565,16 @@ PrefabInstance:
       propertyPath: m_DefaultActionMap
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: otherPlayer
+      value: 
+      objectReference: {fileID: 826275637}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: chatouilleBarre
+      value: 
+      objectReference: {fileID: 1181999345}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
