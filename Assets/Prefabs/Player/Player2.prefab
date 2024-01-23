@@ -280,6 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   speedPorteObject: 5
+  speedGuilli: 6
   jumpForce: 20
   gravityForce: 70
   throwForce: 30

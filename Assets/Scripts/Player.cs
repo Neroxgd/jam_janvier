@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
     private Rigidbody rbPlayer;
-    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f;
+    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.6f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f;
     private bool porter;
     private float currentSpeed;
     private RaycastHit groundHit;
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
 
     public void Porter(InputAction.CallbackContext context)
     {
-        if (!context.started || currentObjectPorted != null || porter) return;
+        if (!context.started || currentObjectPorted != null || porter || currentSpeed == speedGuilli) return;
         notThrow = true;
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hit, 1f))
@@ -83,11 +83,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(transform.position, 0.6f);
-        Gizmos.DrawSphere(transform.position + transform.forward * 1.5f, 0.6f);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.DrawSphere(transform.position, 0.6f);
+    //     Gizmos.DrawSphere(transform.position + transform.forward * 1.5f, 0.6f);
+    // }
 
     public void Jeter(InputAction.CallbackContext context)
     {
@@ -103,10 +103,17 @@ public class Player : MonoBehaviour
 
     public void Chatouiller(InputAction.CallbackContext context)
     {
+        if (currentSpeed == speedPorteObject) return;
         if (context.started)
+        {
+            currentSpeed = speedGuilli;
             isChatouilling = true;
+        }
         else if (context.canceled)
+        {
+            currentSpeed = speed;
             isChatouilling = false;
+        }
     }
 
     private void SeFairePorter(Player player)
@@ -121,7 +128,7 @@ public class Player : MonoBehaviour
         notThrow = false;
     }
 
-    private IEnumerator Stun(Player player)
+    public IEnumerator Stun(Player player)
     {
         if (player == null) yield break;
         player.enabled = false;
