@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         if (isChatouilling)
         {
             RaycastHit hitChatouille;
-            if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hitChatouille, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
+            if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hitChatouille, 1.5f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
                 hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
         }
         chatouilleBarre.fillAmount -= chatouilleCalme / 10f * Time.deltaTime;
@@ -61,25 +61,32 @@ public class Player : MonoBehaviour
     public void Porter(InputAction.CallbackContext context)
     {
         if (!context.started || currentObjectPorted != null || porter) return;
-        currentSpeed = speedPorteObject;
         notThrow = true;
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hit, 1f))
         {
             if (hit.transform.GetComponent<ObjectPortable>())
             {
+                currentSpeed = speedPorteObject;
                 StartCoroutine(Wait1Frame());
                 currentObjectPorted = hit.transform;
                 hit.transform.GetComponent<ObjectPortable>().Porter(this);
             }
             // if (hit.transform.GetComponent<Player>() && hit.transform != this)
             // {
+            // currentSpeed = speedPorteObject;
             //     StartCoroutine(Wait1Frame());
             //     currentObjectPorted = hit.transform;
             //     currentObjectPorted.transform.parent = transform;
             //     currentObjectPorted.GetComponent<Player>().SeFairePorter(this);
             // }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, 0.6f);
+        Gizmos.DrawSphere(transform.position + transform.forward * 1.5f, 0.6f);
     }
 
     public void Jeter(InputAction.CallbackContext context)

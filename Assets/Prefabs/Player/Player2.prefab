@@ -94,7 +94,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3945168428789819356}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a9380a5f3ee19f14ba5638f98c6a77c5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
   jumpForce: 20
   gravityForce: 70
   throwForce: 30
-  chatouillePower: 1
+  chatouillePower: 2
   chatouilleCalme: 0.1
   layerGround:
     serializedVersion: 2

@@ -283,7 +283,7 @@ MonoBehaviour:
   jumpForce: 20
   gravityForce: 70
   throwForce: 30
-  chatouillePower: 1
+  chatouillePower: 2
   chatouilleCalme: 0.1
   layerGround:
     serializedVersion: 2
