@@ -8,14 +8,16 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
     private Rigidbody rbPlayer;
-    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.6f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f;
+    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.6f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f;
     private bool porter;
     private float currentSpeed;
+    public float StunTimeObj => stunTimeObject;
     private RaycastHit groundHit;
     private Vector3 currentRotation;
     [SerializeField] private LayerMask layerGround;
     [SerializeField] private Image chatouilleBarre; public Image ChatouilleBarre { get { return chatouilleBarre; } set { chatouilleBarre = value; } }
     private bool notThrow;
+    [SerializeField] private GameObject winScreen;
     private bool isChatouilling;
     private Transform currentObjectPorted;
     private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, out groundHit, transform.rotation, 0.5f, layerGround);
@@ -41,7 +43,15 @@ public class Player : MonoBehaviour
         {
             RaycastHit hitChatouille;
             if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hitChatouille, 1.5f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
+            {
                 hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
+                if (hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount >= 1f)
+                {
+                    hitChatouille.transform.GetComponent<Player>().enabled = false;
+                    winScreen.SetActive(true);
+                    this.enabled = false;
+                }
+            }
         }
         chatouilleBarre.fillAmount -= chatouilleCalme / 10f * Time.deltaTime;
     }
@@ -94,7 +104,7 @@ public class Player : MonoBehaviour
         if (!context.started || currentObjectPorted == null || notThrow || porter) return;
         currentSpeed = speed;
         Rigidbody rbCurrentObjectPorted = currentObjectPorted.GetComponent<Rigidbody>();
-        StartCoroutine(Stun(currentObjectPorted.GetComponent<Player>()));
+        StartCoroutine(Stun(currentObjectPorted.GetComponent<Player>(), 1f));
         rbCurrentObjectPorted.isKinematic = false;
         currentObjectPorted.transform.parent = null;
         rbCurrentObjectPorted.AddForce(new Vector3(transform.forward.x, transform.forward.y, transform.forward.z) * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
@@ -128,7 +138,7 @@ public class Player : MonoBehaviour
         notThrow = false;
     }
 
-    public IEnumerator Stun(Player player)
+    public IEnumerator Stun(Player player, float timeStun)
     {
         if (player == null) yield break;
         player.enabled = false;
