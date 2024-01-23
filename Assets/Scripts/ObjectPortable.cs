@@ -1,8 +1,8 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class ObjectPortable : MonoBehaviour
 {
-    private bool porter;
     private Player _player;
     private Rigidbody rb;
 
@@ -11,24 +11,11 @@ public class ObjectPortable : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Porter(Player player, bool isPorter)
+    public void Porter(Player player)
     {
-        if (isPorter)
-        {
-            porter = true;
-            _player = player;
-            rb.isKinematic = true;
-        }
-        else
-            porter = false;
-    }
-
-    private void Update()
-    {
-        if (porter)
-        {
-            transform.position = _player.transform.position + Vector3.up * 1.1f;
-            transform.rotation = _player.transform.rotation;
-        }
+        _player = player;
+        transform.DOMove(_player.transform.position + Vector3.up * 1.1f, 0.1f);
+        rb.isKinematic = true;
+        transform.parent = player.transform;
     }
 }

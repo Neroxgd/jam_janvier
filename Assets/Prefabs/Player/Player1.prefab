@@ -209,6 +209,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ea1c9f68-97dd-450b-aec4-a54b7353baa8
     m_ActionName: Player 1/Porter[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8869344335908162825}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Jeter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0332cd08-ec78-4e11-8cc8-b9d555eb6aec
+    m_ActionName: Player 1/Jeter[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player 1
@@ -227,8 +243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpForce: 15
-  gravityForce: 0.1
+  jumpForce: 20
+  gravityForce: 70
+  throwForce: 10
   layerGround:
     serializedVersion: 2
     m_Bits: 1
