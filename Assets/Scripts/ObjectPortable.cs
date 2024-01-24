@@ -14,7 +14,8 @@ public class ObjectPortable : MonoBehaviour
     public void Porter(Player player)
     {
         _player = player;
-        transform.DOMove(_player.transform.position + Vector3.up * 1.1f, 0.1f);
+        transform.DOMove(_player.transform.position + Vector3.up * 1.6f, 0.1f)
+        .OnComplete(() => transform.position = _player.transform.position + Vector3.up * 1.6f);
         rb.isKinematic = true;
         transform.parent = player.transform;
     }

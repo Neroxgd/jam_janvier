@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -17,13 +18,15 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask layerGround;
     [SerializeField] private Image chatouilleBarre; public Image ChatouilleBarre { get { return chatouilleBarre; } set { chatouilleBarre = value; } }
     private bool notThrow;
-    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject winScreen, grabUI;
+    private Animator animator;
     private bool isChatouilling;
     private Transform currentObjectPorted;
-    private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, out groundHit, transform.rotation, 0.5f, layerGround);
+    private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.25f, 0.1f, 0.25f), Vector3.down, out groundHit, transform.rotation, 0.75f, layerGround);
 
     private void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         currentSpeed = speed;
         rbPlayer = GetComponent<Rigidbody>();
         Physics.gravity = Vector3.down * gravityForce;
@@ -33,16 +36,20 @@ public class Player : MonoBehaviour
     {
         if (porter) return;
         direction = context.ReadValue<Vector2>();
+        animator.SetBool("course", true);
         if (context.performed)
             currentRotation = new Vector3(direction.x, 0, direction.y);
+        else if (context.canceled)
+            animator.SetBool("course", false);
     }
 
     private void Update()
     {
+        GrabUI();
         if (isChatouilling)
         {
             RaycastHit hitChatouille;
-            if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hitChatouille, 1.5f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
+            if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hitChatouille, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
             {
                 hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
                 if (hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount >= 1f)
@@ -73,14 +80,11 @@ public class Player : MonoBehaviour
         if (!context.started || currentObjectPorted != null || porter || currentSpeed == speedGuilli) return;
         notThrow = true;
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hit, 1f))
+        if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hit, 1f))
         {
             if (hit.transform.GetComponent<ObjectPortable>())
             {
-                currentSpeed = speedPorteObject;
-                StartCoroutine(Wait1Frame());
-                currentObjectPorted = hit.transform;
-                hit.transform.GetComponent<ObjectPortable>().Porter(this);
+                StartCoroutine(WaitPorter(hit));
             }
             // if (hit.transform.GetComponent<Player>() && hit.transform != this)
             // {
@@ -93,11 +97,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawSphere(transform.position, 0.6f);
-    //     Gizmos.DrawSphere(transform.position + transform.forward * 1.5f, 0.6f);
-    // }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, 0.1f);
+        Gizmos.DrawSphere(transform.position + transform.forward * 0.75f, 0.1f);
+    }
 
     public void Jeter(InputAction.CallbackContext context)
     {
@@ -128,21 +132,44 @@ public class Player : MonoBehaviour
 
     private void SeFairePorter(Player player)
     {
-        transform.DOMove(player.transform.position + Vector3.up * 1.1f, 0.1f);
+        transform.DOMove(player.transform.position + Vector3.up * 1.6f, 0.1f);
         rbPlayer.isKinematic = true;
     }
 
-    private IEnumerator Wait1Frame()
+    private IEnumerator WaitPorter(RaycastHit hit)
     {
-        yield return 0;
+        StartCoroutine(Stun(this, 0.5f));
+        animator.SetTrigger("lift");
+        yield return new WaitForSeconds(0.5f);
         notThrow = false;
+        currentSpeed = speedPorteObject;
+        currentObjectPorted = hit.transform;
+        hit.transform.GetComponent<ObjectPortable>().Porter(this);
     }
 
     public IEnumerator Stun(Player player, float timeStun)
     {
         if (player == null) yield break;
         player.enabled = false;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(timeStun);
         player.enabled = true;
+    }
+
+    private void GrabUI()
+    {
+        RaycastHit hit;
+        if (currentSpeed != speedPorteObject && Physics.SphereCast(transform.position, 0.25f, transform.forward, out hit, 1f) && hit.transform.GetComponent<ObjectPortable>())
+        {
+            grabUI.SetActive(true);
+            grabUI.GetComponentInChildren<TextMeshProUGUI>().text = "Grab";
+            return;
+        }
+        if (currentSpeed == speedPorteObject)
+        {
+            grabUI.SetActive(true);
+            grabUI.GetComponentInChildren<TextMeshProUGUI>().text = "Throw";
+            return;
+        }
+        grabUI.SetActive(false);
     }
 }

@@ -130,7 +130,7 @@
                 {
                     "name": "",
                     "id": "ef46e2be-016a-4dee-bac8-b0e534a399fd",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -141,7 +141,7 @@
                 {
                     "name": "",
                     "id": "31eb7fd3-3ada-48af-beae-1a7af09c343d",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -152,7 +152,7 @@
                 {
                     "name": "",
                     "id": "34f14992-6184-427a-ad2d-454732e0f162",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
