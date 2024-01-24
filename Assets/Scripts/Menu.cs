@@ -5,7 +5,7 @@ public class Menu : MonoBehaviour
 {
     public void Play()
     {
-        SceneManager.LoadScene("Aurelien");
+        SceneManager.LoadScene("Anthony");
     }
 
     public void Quit()

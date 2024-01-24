@@ -14,7 +14,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Retry()
     {
-        SceneManager.LoadScene("Aurelien");
+        SceneManager.LoadScene("Anthony");
     }
 
     public void GoMenu()

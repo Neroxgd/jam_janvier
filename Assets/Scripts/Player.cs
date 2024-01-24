@@ -40,13 +40,15 @@ public class Player : MonoBehaviour
         //     animator.SetBool("courseGuilli", true);
         // if (animator.GetBool("Porter")) 
         //     animator.SetBool("coursePorter", true);
+        if (animator != null)
         animator.SetBool("course", true);
         if (context.performed)
             currentRotation = new Vector3(direction.x, 0, direction.y);
         else if (context.canceled)
         {
             // if (animator.GetBool("guilli"))
-            animator.SetBool("course", false);
+            if (animator != null)
+                animator.SetBool("course", false);
             // else 
 
         }
