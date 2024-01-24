@@ -36,11 +36,20 @@ public class Player : MonoBehaviour
     {
         if (porter) return;
         direction = context.ReadValue<Vector2>();
+        // if (animator.GetBool("guilli"))
+        //     animator.SetBool("courseGuilli", true);
+        // if (animator.GetBool("Porter")) 
+        //     animator.SetBool("coursePorter", true);
         animator.SetBool("course", true);
         if (context.performed)
             currentRotation = new Vector3(direction.x, 0, direction.y);
         else if (context.canceled)
+        {
+            // if (animator.GetBool("guilli"))
             animator.SetBool("course", false);
+            // else 
+
+        }
     }
 
     private void Update()
@@ -139,12 +148,12 @@ public class Player : MonoBehaviour
     private IEnumerator WaitPorter(RaycastHit hit)
     {
         StartCoroutine(Stun(this, 0.5f));
-        animator.SetTrigger("lift");
+        animator.SetTrigger("porter");
+        hit.transform.GetComponent<ObjectPortable>().Porter(this);
         yield return new WaitForSeconds(0.5f);
         notThrow = false;
         currentSpeed = speedPorteObject;
         currentObjectPorted = hit.transform;
-        hit.transform.GetComponent<ObjectPortable>().Porter(this);
     }
 
     public IEnumerator Stun(Player player, float timeStun)
