@@ -261,6 +261,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7d9b83b8-b286-45e6-8d3d-1afc2a835a16
     m_ActionName: Player 2/Chatouille[/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e0240a0a-5d68-4310-bec2-f581927990b8
+    m_ActionName: Player 1/PauseMenu[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player 2
@@ -286,7 +290,10 @@ MonoBehaviour:
   throwForce: 30
   chatouillePower: 2
   chatouilleCalme: 0.1
+  stunTimeObject: 3
   layerGround:
     serializedVersion: 2
     m_Bits: 9
   chatouilleBarre: {fileID: 0}
+  winScreen: {fileID: 0}
+  grabUI: {fileID: 0}

@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     private Vector2 direction;
     private Rigidbody rbPlayer;
     [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.6f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f;
-    private bool porter;
+    private bool stun;
     private float currentSpeed;
     public float StunTimeObj => stunTimeObject;
     private RaycastHit groundHit;
@@ -34,24 +34,14 @@ public class Player : MonoBehaviour
 
     public void Deplacement(InputAction.CallbackContext context)
     {
-        if (porter) return;
+        if (stun) return;
         direction = context.ReadValue<Vector2>();
-        // if (animator.GetBool("guilli"))
-        //     animator.SetBool("courseGuilli", true);
-        // if (animator.GetBool("Porter")) 
-        //     animator.SetBool("coursePorter", true);
-        if (animator != null)
         animator.SetBool("course", true);
         if (context.performed)
             currentRotation = new Vector3(direction.x, 0, direction.y);
         else if (context.canceled)
-        {
-            // if (animator.GetBool("guilli"))
-            if (animator != null)
-                animator.SetBool("course", false);
-            // else 
+            animator.SetBool("course", false);
 
-        }
     }
 
     private void Update()
@@ -82,13 +72,13 @@ public class Player : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (!context.started || !IsGrounded || porter) return;
+        if (!context.started || !IsGrounded || stun) return;
         rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     public void Porter(InputAction.CallbackContext context)
     {
-        if (!context.started || currentObjectPorted != null || porter || currentSpeed == speedGuilli) return;
+        if (!context.started || currentObjectPorted != null || stun || currentSpeed == speedGuilli) return;
         notThrow = true;
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hit, 1f))
@@ -116,10 +106,11 @@ public class Player : MonoBehaviour
 
     public void Jeter(InputAction.CallbackContext context)
     {
-        if (!context.started || currentObjectPorted == null || notThrow || porter) return;
+        if (!context.started || currentObjectPorted == null || notThrow || stun) return;
         currentSpeed = speed;
+        animator.SetTrigger("porter");
         Rigidbody rbCurrentObjectPorted = currentObjectPorted.GetComponent<Rigidbody>();
-        StartCoroutine(Stun(currentObjectPorted.GetComponent<Player>(), 1f));
+        StartCoroutine(Stun(currentObjectPorted.GetComponent<Player>(), 1f, false));
         rbCurrentObjectPorted.isKinematic = false;
         currentObjectPorted.transform.parent = null;
         rbCurrentObjectPorted.AddForce(new Vector3(transform.forward.x, transform.forward.y, transform.forward.z) * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
@@ -131,11 +122,13 @@ public class Player : MonoBehaviour
         if (currentSpeed == speedPorteObject) return;
         if (context.started)
         {
+            animator.SetBool("guilli", true);
             currentSpeed = speedGuilli;
             isChatouilling = true;
         }
         else if (context.canceled)
         {
+            animator.SetBool("guilli", false);
             currentSpeed = speed;
             isChatouilling = false;
         }
@@ -149,20 +142,28 @@ public class Player : MonoBehaviour
 
     private IEnumerator WaitPorter(RaycastHit hit)
     {
-        StartCoroutine(Stun(this, 0.5f));
+        StartCoroutine(Stun(this, 0.3f, false));
         animator.SetTrigger("porter");
         hit.transform.GetComponent<ObjectPortable>().Porter(this);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         notThrow = false;
         currentSpeed = speedPorteObject;
         currentObjectPorted = hit.transform;
     }
 
-    public IEnumerator Stun(Player player, float timeStun)
+    public IEnumerator Stun(Player player, float timeStun, bool isStun)
     {
         if (player == null) yield break;
+        if (isStun)
+        {
+            animator.SetTrigger("stun");
+            animator.SetBool("course", false);
+            stun = true;
+        }
         player.enabled = false;
         yield return new WaitForSeconds(timeStun);
+        if (isStun)
+            stun = false;
         player.enabled = true;
     }
 

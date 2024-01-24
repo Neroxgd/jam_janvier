@@ -251,7 +251,7 @@ MonoBehaviour:
   throwForce: 30
   chatouillePower: 2
   chatouilleCalme: 0.1
-  stunTimeObject: 1
+  stunTimeObject: 3
   layerGround:
     serializedVersion: 2
     m_Bits: 9

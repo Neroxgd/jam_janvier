@@ -14,7 +14,7 @@ public class StunObject : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Player>() && rb.velocity.magnitude >= minimumSpeedToTrigger)
-            StartCoroutine(other.GetComponent<Player>().Stun(other.GetComponent<Player>(), other.GetComponent<Player>().StunTimeObj));
+            StartCoroutine(other.GetComponent<Player>().Stun(other.GetComponent<Player>(), other.GetComponent<Player>().StunTimeObj, true));
     }
 
     // void Update()
