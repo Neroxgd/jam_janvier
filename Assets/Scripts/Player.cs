@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         if (isChatouilling)
         {
             RaycastHit hitChatouille;
-            if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hitChatouille, transform.rotation, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
+            if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hitChatouille, transform.rotation, distanceGuilli) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
             {
                 hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
                 if (hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount >= 1f)
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
         if (!context.started || currentObjectPorted != null || stun || currentSpeed == speedGuilli) return;
         notThrow = true;
         RaycastHit hit;
-        if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hit, transform.rotation, 1f))
+        if (Physics.BoxCast(transform.position, new Vector3(rayonGrab, 1f, 0.1f), transform.forward, out hit, transform.rotation, distancegrab))
         {
             if (hit.transform.GetComponent<ObjectPortable>())
                 StartCoroutine(WaitPorter(hit, false));
@@ -224,7 +224,7 @@ public class Player : MonoBehaviour
     private void GrabUI()
     {
         RaycastHit hit;
-        if (currentSpeed != speedPorteObject && Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hit, transform.rotation, 1f) && (hit.transform.GetComponent<ObjectPortable>() || hit.transform.GetComponent<Player>()))
+        if (currentSpeed != speedPorteObject && Physics.BoxCast(transform.position, new Vector3(rayonGrab, 1f, 0.1f), transform.forward, out hit, transform.rotation, distancegrab) && (hit.transform.GetComponent<ObjectPortable>() || hit.transform.GetComponent<Player>()))
         {
             grabUI.SetActive(true);
             grabUI.GetComponentInChildren<TextMeshProUGUI>().text = "Grab";
