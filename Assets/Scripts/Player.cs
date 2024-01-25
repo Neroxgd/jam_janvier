@@ -84,17 +84,9 @@ public class Player : MonoBehaviour
         if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hit, 1f))
         {
             if (hit.transform.GetComponent<ObjectPortable>())
-            {
-                StartCoroutine(WaitPorter(hit));
-            }
-            // if (hit.transform.GetComponent<Player>() && hit.transform != this)
-            // {
-            // currentSpeed = speedPorteObject;
-            //     StartCoroutine(Wait1Frame());
-            //     currentObjectPorted = hit.transform;
-            //     currentObjectPorted.transform.parent = transform;
-            //     currentObjectPorted.GetComponent<Player>().SeFairePorter(this);
-            // }
+                StartCoroutine(WaitPorter(hit, false));
+            else if (hit.transform.GetComponent<Player>() && hit.transform != this)
+                StartCoroutine(WaitPorter(hit, true));
         }
     }
 
@@ -140,15 +132,18 @@ public class Player : MonoBehaviour
         rbPlayer.isKinematic = true;
     }
 
-    private IEnumerator WaitPorter(RaycastHit hit)
+    private IEnumerator WaitPorter(RaycastHit hit, bool ifPlayer)
     {
         StartCoroutine(Stun(this, 0.3f, false));
         animator.SetTrigger("porter");
-        hit.transform.GetComponent<ObjectPortable>().Porter(this);
-        yield return new WaitForSeconds(0.3f);
-        notThrow = false;
-        currentSpeed = speedPorteObject;
         currentObjectPorted = hit.transform;
+        if (ifPlayer)
+            currentObjectPorted.GetComponent<ObjectPortable>().Porter(this);
+        else
+            currentObjectPorted.GetComponent<Player>().SeFairePorter(this);
+        notThrow = false;
+        yield return new WaitForSeconds(0.3f);
+        currentSpeed = speedPorteObject;
     }
 
     public IEnumerator Stun(Player player, float timeStun, bool isStun)
