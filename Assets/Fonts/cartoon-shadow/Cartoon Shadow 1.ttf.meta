@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 4afde0087e599524d9420b8f8089da5b
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Cartoon Shadow
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c7175f6a145809a49801b4efb5fd11dd, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
