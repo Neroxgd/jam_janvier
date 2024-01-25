@@ -284,6 +284,15 @@ MonoBehaviour:
   winScreen: {fileID: 0}
   grabUI: {fileID: 0}
   debattreUI: {fileID: 0}
+  menuLose: {fileID: 8300000, guid: 2d7dc2253334632479f6dda5666200a8, type: 3}
+  humainEnd: {fileID: 8300000, guid: 61d9a8747e405f7478346b5597aa15f2, type: 3}
+  porter: {fileID: 8300000, guid: 51e2ffcabcbd5f645863e4b31091e9ed, type: 3}
+  seDeplacer: {fileID: 8300000, guid: 7e4076d782cfc3f408ac36bbdef27598, type: 3}
+  jeter: {fileID: 8300000, guid: a5193390100a91e4f8cbf38a29eb89da, type: 3}
+  stunSound: {fileID: 8300000, guid: 39d9ac4aaff9af54789ab8db29c88bcf, type: 3}
+  jump: {fileID: 0}
+  seFaireChatouiller: {fileID: 8300000, guid: 6d32980ec6134f24fbeea4cc5b78900d, type: 3}
+  seDebattre: {fileID: 8300000, guid: 3546f002e1cbe1d4681c3d0c9e033b8a, type: 3}
   guizmosGrab: 0
 --- !u!1001 &3200051734875517265
 PrefabInstance:

@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using Aurinaxtailer;
 
 public class Player : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     private bool isChatouilling;
     private Transform currentObjectPorted;
     private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.25f, 0.1f, 0.25f), Vector3.down, out groundHit, transform.rotation, 0.75f, layerGround);
+    [SerializeField] private AudioClip menuLose, humainEnd, porter, seDeplacer, jeter, stunSound, jump, seFaireChatouiller, seDebattre;
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
     public void Deplacement(InputAction.CallbackContext context)
     {
         if (stun) return;
+        AudioManager.Instance.PlaySound(seDeplacer);
         direction = context.ReadValue<Vector2>();
         animator.SetBool("course", true);
         if (context.performed)
@@ -71,7 +74,10 @@ public class Player : MonoBehaviour
     private IEnumerator WaitEndGame(RaycastHit hitChatouille)
     {
         humain.EndGame();
-        yield return new WaitForSeconds(3f);
+        AudioManager.Instance.PlaySound(humainEnd);
+        AudioManager.Instance.StopMusic();
+        yield return new WaitForSeconds(1.5f);
+        AudioManager.Instance.PlayMusic(menuLose);
         hitChatouille.transform.GetComponent<Player>().enabled = false;
         winScreen.SetActive(true);
     }
@@ -85,6 +91,7 @@ public class Player : MonoBehaviour
     public void Jump(InputAction.CallbackContext context)
     {
         if (!context.started || !IsGrounded || stun) return;
+        AudioManager.Instance.PlaySound(jump);
         rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
@@ -134,6 +141,7 @@ public class Player : MonoBehaviour
             currentObjectPorted.GetComponent<Player>().animator.SetBool("idle", true);
         }
         currentObjectPorted = null;
+        AudioManager.Instance.PlaySound(jeter);
         animator.SetTrigger("porter");
     }
 
@@ -142,6 +150,8 @@ public class Player : MonoBehaviour
         if (currentSpeed == speedPorteObject) return;
         if (context.started)
         {
+            // AudioManager.Instance.PlaySound(guilli);
+            AudioManager.Instance.PlaySound(seFaireChatouiller);
             currentSpeed = speedGuilli;
             isChatouilling = true;
             animator.SetBool("guilli", true);
@@ -168,6 +178,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator WaitPorter(RaycastHit hit, bool ifPlayer)
     {
+        AudioManager.Instance.PlaySound(porter);
         StartCoroutine(Stun(this, 0.3f, false));
         notThrow = false;
         if (ifPlayer)
@@ -192,6 +203,7 @@ public class Player : MonoBehaviour
         }
         if (isStun)
         {
+            AudioManager.Instance.PlaySound(stunSound);
             stun = true;
             animator.SetTrigger("stun");
             animator.SetBool("course", false);
@@ -225,6 +237,7 @@ public class Player : MonoBehaviour
     {
         if (!context.started || !rbPlayer.isKinematic) return;
         compteurNbDebattre--;
+        AudioManager.Instance.PlaySound(seDebattre);
         transform.DOShakePosition(0.2f, 0.2f, 50, 180f, false, false, ShakeRandomnessMode.Harmonic).SetId("shake");
         if (compteurNbDebattre <= 0)
         {

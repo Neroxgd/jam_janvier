@@ -44,5 +44,10 @@ namespace Aurinaxtailer
                     audioSource.DOFade(0.5f, timeFadeChangeMusic);
                 });
         }
+
+        public void StopMusic()
+        {
+            audioSource.clip = null;
+        }
     }
 }
