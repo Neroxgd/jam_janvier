@@ -3423,7 +3423,7 @@ PrefabInstance:
     - target: {fileID: 4617631746630879676, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: m_Size.x
-      value: 0.5
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 4617631746630879676, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
@@ -3433,7 +3433,17 @@ PrefabInstance:
     - target: {fileID: 4617631746630879676, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: m_Size.z
-      value: 0.5
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617631746630879676, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617631746630879676, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4981626419762573146, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
@@ -3567,9 +3577,19 @@ PrefabInstance:
       objectReference: {fileID: 2058502254}
     - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
+      propertyPath: stunTimeObject
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
       propertyPath: chatouilleBarre
       value: 
       objectReference: {fileID: 1298914032}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: chatouillePower
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10727,7 +10747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2141113311
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10769,7 +10789,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0d4a2be2f50ba2545b101433e13b168a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b69251d95699c74db788f0758adc58a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11220,6 +11240,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chat
       objectReference: {fileID: 0}
+    - target: {fileID: 4617631746630879676, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617631746630879676, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617631746630879676, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617631746630879676, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 4981626419762573146, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
       propertyPath: m_RootOrder
@@ -11342,14 +11382,34 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: dbd09ab4be40bf6409d60440d2869fba, type: 3}
     - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
+      propertyPath: guizmosGrab
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
       propertyPath: otherPlayer
       value: 
       objectReference: {fileID: 826275637}
     - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
+      propertyPath: rayonGuilli
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: stunTimeObject
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
       propertyPath: chatouilleBarre
       value: 
       objectReference: {fileID: 1181999345}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: chatouillePower
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
