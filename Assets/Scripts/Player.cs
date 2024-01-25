@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Image chatouilleBarre;
     private bool notThrow;
     [SerializeField] private GameObject winScreen, grabUI;
+    private Humain humain;
     private Animator animator;
     private bool isChatouilling;
     private Transform currentObjectPorted;
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
         currentSpeed = speed;
         rbPlayer = GetComponent<Rigidbody>();
         Physics.gravity = Vector3.down * gravityForce;
+        humain = FindObjectOfType(typeof(Humain)).GetComponent<Humain>();
     }
 
     public void Deplacement(InputAction.CallbackContext context)
@@ -57,13 +60,20 @@ public class Player : MonoBehaviour
                 hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
                 if (hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount >= 1f)
                 {
-                    hitChatouille.transform.GetComponent<Player>().enabled = false;
-                    winScreen.SetActive(true);
                     this.enabled = false;
+                    StartCoroutine(WaitEndGame(hitChatouille));
                 }
             }
         }
         chatouilleBarre.fillAmount -= chatouilleCalme / 10f * Time.deltaTime;
+    }
+
+    private IEnumerator WaitEndGame(RaycastHit hitChatouille)
+    {
+        humain.EndGame();
+        yield return new WaitForSeconds(2f);
+        hitChatouille.transform.GetComponent<Player>().enabled = false;
+        winScreen.SetActive(true);
     }
 
     private void FixedUpdate()
