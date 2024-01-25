@@ -75,6 +75,8 @@ public class Player : MonoBehaviour
             }
         }
         chatouilleBarre.fillAmount -= chatouilleCalme / 10f * Time.deltaTime;
+        if (transform.position.y < -3f)
+            transform.position = new Vector3(4.3f, 1.7f, -3.5f);
     }
 
     private IEnumerator WaitEndGame(RaycastHit hitChatouille)
