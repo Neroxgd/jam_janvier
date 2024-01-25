@@ -260,6 +260,10 @@ MonoBehaviour:
   chatouillePower: 2
   chatouilleCalme: 0.1
   stunTimeObject: 3
+  rayonGuilli: 0.5
+  rayonGrab: 0.5
+  distancegrab: 1
+  distanceGuilli: 1
   nombreDebattre: 10
   layerGround:
     serializedVersion: 2
@@ -267,6 +271,8 @@ MonoBehaviour:
   chatouilleBarre: {fileID: 0}
   winScreen: {fileID: 0}
   grabUI: {fileID: 0}
+  debattreUI: {fileID: 0}
+  guizmosGrab: 0
 --- !u!1001 &3540611961963482970
 PrefabInstance:
   m_ObjectHideFlags: 0
