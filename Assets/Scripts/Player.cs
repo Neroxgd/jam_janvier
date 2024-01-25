@@ -172,8 +172,8 @@ public class Player : MonoBehaviour
 
     private void SeFairePorter(Player player)
     {
-        transform.DOMove(player.transform.position + Vector3.up * 1.8f, 0.1f)
-        .OnComplete(() => transform.position = player.transform.position + Vector3.up * 1.8f);
+        transform.DOMove(player.transform.position + Vector3.up * 1.9f, 0.1f)
+        .OnComplete(() => transform.position = player.transform.position + Vector3.up * 1.9f);
         rbPlayer.isKinematic = true;
         compteurNbDebattre = (int)nombreDebattre;
         transform.parent = player.transform;
@@ -246,7 +246,7 @@ public class Player : MonoBehaviour
         if (!context.started || !rbPlayer.isKinematic) return;
         compteurNbDebattre--;
         AudioManager.Instance.PlaySound(seDebattre);
-        transform.DOShakePosition(0.2f, 0.2f, 50, 180f, false, false, ShakeRandomnessMode.Harmonic).SetId("shake");
+        transform.DOShakePosition(0.2f, 0.15f, 50, 180f, false, false, ShakeRandomnessMode.Harmonic).SetId("shake");
         if (compteurNbDebattre <= 0)
         {
             DOTween.Kill("shake");
