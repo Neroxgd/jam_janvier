@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
     private IEnumerator WaitEndGame(RaycastHit hitChatouille)
     {
         humain.EndGame();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         hitChatouille.transform.GetComponent<Player>().enabled = false;
         winScreen.SetActive(true);
     }
