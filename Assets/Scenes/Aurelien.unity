@@ -1366,7 +1366,7 @@ PrefabInstance:
     - target: {fileID: 7738387242926960770, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 10
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7738387242926960770, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}

@@ -11,12 +11,14 @@ public class Player : MonoBehaviour
     private Rigidbody rbPlayer;
     [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.6f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f;
     private bool stun;
+    [SerializeField] private uint nombreDebattre = 10;
+    private int compteurNbDebattre;
     private float currentSpeed;
     public float StunTimeObj => stunTimeObject;
     private RaycastHit groundHit;
     private Vector3 currentRotation;
     [SerializeField] private LayerMask layerGround;
-    [SerializeField] private Image chatouilleBarre; public Image ChatouilleBarre { get { return chatouilleBarre; } set { chatouilleBarre = value; } }
+    [SerializeField] private Image chatouilleBarre;
     private bool notThrow;
     [SerializeField] private GameObject winScreen, grabUI;
     private Animator animator;
@@ -52,8 +54,8 @@ public class Player : MonoBehaviour
             RaycastHit hitChatouille;
             if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hitChatouille, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
             {
-                hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
-                if (hitChatouille.transform.GetComponent<Player>().ChatouilleBarre.fillAmount >= 1f)
+                hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
+                if (hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount >= 1f)
                 {
                     hitChatouille.transform.GetComponent<Player>().enabled = false;
                     winScreen.SetActive(true);
@@ -100,13 +102,14 @@ public class Player : MonoBehaviour
     {
         if (!context.started || currentObjectPorted == null || notThrow || stun) return;
         currentSpeed = speed;
-        animator.SetTrigger("porter");
         Rigidbody rbCurrentObjectPorted = currentObjectPorted.GetComponent<Rigidbody>();
         StartCoroutine(Stun(currentObjectPorted.GetComponent<Player>(), 1f, false));
         rbCurrentObjectPorted.isKinematic = false;
         currentObjectPorted.transform.parent = null;
         rbCurrentObjectPorted.AddForce(new Vector3(transform.forward.x, transform.forward.y, transform.forward.z) * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
+        currentObjectPorted.GetComponent<Player>().animator.SetBool("idle", true);
         currentObjectPorted = null;
+        animator.SetTrigger("porter");
     }
 
     public void Chatouiller(InputAction.CallbackContext context)
@@ -114,15 +117,15 @@ public class Player : MonoBehaviour
         if (currentSpeed == speedPorteObject) return;
         if (context.started)
         {
-            animator.SetBool("guilli", true);
             currentSpeed = speedGuilli;
             isChatouilling = true;
+            animator.SetBool("guilli", true);
         }
         else if (context.canceled)
         {
-            animator.SetBool("guilli", false);
             currentSpeed = speed;
             isChatouilling = false;
+            animator.SetBool("guilli", false);
         }
     }
 
@@ -131,18 +134,21 @@ public class Player : MonoBehaviour
         transform.DOMove(player.transform.position + Vector3.up * 1.6f, 0.1f)
         .OnComplete(() => transform.position = player.transform.position + Vector3.up * 1.6f);
         rbPlayer.isKinematic = true;
+        compteurNbDebattre = (int)nombreDebattre;
         transform.parent = player.transform;
+        animator.SetBool("idle", false);
+        animator.SetBool("stunPorter", true);
     }
 
     private IEnumerator WaitPorter(RaycastHit hit, bool ifPlayer)
     {
         StartCoroutine(Stun(this, 0.3f, false));
-        animator.SetTrigger("porter");
         notThrow = false;
         if (ifPlayer)
             hit.transform.GetComponent<Player>().SeFairePorter(this);
         else
             hit.transform.GetComponent<ObjectPortable>().Porter(this);
+        animator.SetTrigger("porter");
         yield return 0;
         currentObjectPorted = hit.transform;
         currentSpeed = speedPorteObject;
@@ -151,11 +157,18 @@ public class Player : MonoBehaviour
     public IEnumerator Stun(Player player, float timeStun, bool isStun)
     {
         if (player == null) yield break;
+        if (currentSpeed == speedPorteObject)
+        {
+            currentObjectPorted.transform.parent = null;
+            currentObjectPorted.GetComponent<Rigidbody>().isKinematic = false;
+            currentObjectPorted = null;
+            currentSpeed = speed;
+        }
         if (isStun)
         {
+            stun = true;
             animator.SetTrigger("stun");
             animator.SetBool("course", false);
-            stun = true;
         }
         player.enabled = false;
         yield return new WaitForSeconds(timeStun);
@@ -180,5 +193,20 @@ public class Player : MonoBehaviour
             return;
         }
         grabUI.SetActive(false);
+    }
+
+    public void SeDebattre(InputAction.CallbackContext context)
+    {
+        if (!context.started || !rbPlayer.isKinematic) return;
+        compteurNbDebattre--;
+        transform.DOShakePosition(0.2f, 0.2f, 50, 180f, false, false, ShakeRandomnessMode.Harmonic).SetId("shake");
+        if (compteurNbDebattre <= 0)
+        {
+            DOTween.Kill("shake");
+            transform.parent = null;
+            rbPlayer.isKinematic = false;
+            animator.SetBool("idle", true);
+            animator.SetBool("stunPorter", false);
+        }
     }
 }
