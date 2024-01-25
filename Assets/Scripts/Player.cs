@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using Aurinaxtailer;
 
 public class Player : MonoBehaviour
 {
@@ -24,12 +25,16 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject winScreen, grabUI, debattreUI;
     private Humain humain;
     private Animator animator;
+    private AudioSource runSound;
     private bool isChatouilling;
     private Transform currentObjectPorted;
     private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.25f, 0.1f, 0.25f), Vector3.down, out groundHit, transform.rotation, 0.75f, layerGround);
+    [SerializeField] private AudioClip menuLose, humainEnd, porter, seDeplacer, jeter, stunSound, jump, seFaireChatouiller, seDebattre;
 
     private void Start()
     {
+        runSound = GetComponent<AudioSource>();
+        runSound.clip = seDeplacer;
         animator = GetComponentInChildren<Animator>();
         currentSpeed = speed;
         rbPlayer = GetComponent<Rigidbody>();
@@ -40,12 +45,16 @@ public class Player : MonoBehaviour
     public void Deplacement(InputAction.CallbackContext context)
     {
         if (stun) return;
+        runSound.Play();
         direction = context.ReadValue<Vector2>();
         animator.SetBool("course", true);
         if (context.performed)
             currentRotation = new Vector3(direction.x, 0, direction.y);
         else if (context.canceled)
+        {
+            runSound.Stop();
             animator.SetBool("course", false);
+        }
 
     }
 
@@ -55,7 +64,7 @@ public class Player : MonoBehaviour
         if (isChatouilling)
         {
             RaycastHit hitChatouille;
-            if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hitChatouille, transform.rotation, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
+            if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hitChatouille, transform.rotation, distanceGuilli) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
             {
                 hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
                 if (hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount >= 1f)
@@ -71,7 +80,10 @@ public class Player : MonoBehaviour
     private IEnumerator WaitEndGame(RaycastHit hitChatouille)
     {
         humain.EndGame();
-        yield return new WaitForSeconds(3f);
+        AudioManager.Instance.PlaySound(humainEnd);
+        AudioManager.Instance.StopMusic();
+        yield return new WaitForSeconds(1.5f);
+        AudioManager.Instance.PlayMusic(menuLose);
         hitChatouille.transform.GetComponent<Player>().enabled = false;
         winScreen.SetActive(true);
     }
@@ -85,6 +97,7 @@ public class Player : MonoBehaviour
     public void Jump(InputAction.CallbackContext context)
     {
         if (!context.started || !IsGrounded || stun) return;
+        AudioManager.Instance.PlaySound(jump);
         rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
@@ -93,7 +106,7 @@ public class Player : MonoBehaviour
         if (!context.started || currentObjectPorted != null || stun || currentSpeed == speedGuilli) return;
         notThrow = true;
         RaycastHit hit;
-        if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hit, transform.rotation, 1f))
+        if (Physics.BoxCast(transform.position, new Vector3(rayonGrab, 1f, 0.1f), transform.forward, out hit, transform.rotation, distancegrab))
         {
             if (hit.transform.GetComponent<ObjectPortable>())
                 StartCoroutine(WaitPorter(hit, false));
@@ -114,7 +127,7 @@ public class Player : MonoBehaviour
         else
         {
             Gizmos.color = Color.white;
-            Gizmos.DrawCube(transform.position, new Vector3(rayonGuilli, 1f, 0.1f));
+            Gizmos.DrawCube(transform.position, new Vector3(rayonGrab, 1f, 0.1f));
             Gizmos.DrawCube(transform.position + transform.forward * distancegrab, new Vector3(rayonGrab, 1f, 0.1f));
         }
     }
@@ -134,6 +147,7 @@ public class Player : MonoBehaviour
             currentObjectPorted.GetComponent<Player>().animator.SetBool("idle", true);
         }
         currentObjectPorted = null;
+        AudioManager.Instance.PlaySound(jeter);
         animator.SetTrigger("porter");
     }
 
@@ -142,6 +156,8 @@ public class Player : MonoBehaviour
         if (currentSpeed == speedPorteObject) return;
         if (context.started)
         {
+            // AudioManager.Instance.PlaySound(guilli);
+            AudioManager.Instance.PlaySound(seFaireChatouiller);
             currentSpeed = speedGuilli;
             isChatouilling = true;
             animator.SetBool("guilli", true);
@@ -168,6 +184,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator WaitPorter(RaycastHit hit, bool ifPlayer)
     {
+        AudioManager.Instance.PlaySound(porter);
         StartCoroutine(Stun(this, 0.3f, false));
         notThrow = false;
         if (ifPlayer)
@@ -192,6 +209,7 @@ public class Player : MonoBehaviour
         }
         if (isStun)
         {
+            AudioManager.Instance.PlaySound(stunSound);
             stun = true;
             animator.SetTrigger("stun");
             animator.SetBool("course", false);
@@ -206,7 +224,7 @@ public class Player : MonoBehaviour
     private void GrabUI()
     {
         RaycastHit hit;
-        if (currentSpeed != speedPorteObject && Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hit, transform.rotation, 1f) && (hit.transform.GetComponent<ObjectPortable>() || hit.transform.GetComponent<Player>()))
+        if (currentSpeed != speedPorteObject && Physics.BoxCast(transform.position, new Vector3(rayonGrab, 1f, 0.1f), transform.forward, out hit, transform.rotation, distancegrab) && (hit.transform.GetComponent<ObjectPortable>() || hit.transform.GetComponent<Player>()))
         {
             grabUI.SetActive(true);
             grabUI.GetComponentInChildren<TextMeshProUGUI>().text = "Grab";
@@ -225,6 +243,7 @@ public class Player : MonoBehaviour
     {
         if (!context.started || !rbPlayer.isKinematic) return;
         compteurNbDebattre--;
+        AudioManager.Instance.PlaySound(seDebattre);
         transform.DOShakePosition(0.2f, 0.2f, 50, 180f, false, false, ShakeRandomnessMode.Harmonic).SetId("shake");
         if (compteurNbDebattre <= 0)
         {
