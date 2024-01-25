@@ -128,8 +128,10 @@ public class Player : MonoBehaviour
 
     private void SeFairePorter(Player player)
     {
-        transform.DOMove(player.transform.position + Vector3.up * 1.6f, 0.1f);
+        transform.DOMove(player.transform.position + Vector3.up * 1.6f, 0.1f)
+        .OnComplete(() => transform.position = player.transform.position + Vector3.up * 1.6f);
         rbPlayer.isKinematic = true;
+        transform.parent = player.transform;
     }
 
     private IEnumerator WaitPorter(RaycastHit hit, bool ifPlayer)
