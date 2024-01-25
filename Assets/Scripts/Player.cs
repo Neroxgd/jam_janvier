@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
     private Rigidbody rbPlayer;
-    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.6f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f;
+    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f;
     private bool stun;
     [SerializeField] private uint nombreDebattre = 10;
     private int compteurNbDebattre;
@@ -107,7 +107,8 @@ public class Player : MonoBehaviour
         rbCurrentObjectPorted.isKinematic = false;
         currentObjectPorted.transform.parent = null;
         rbCurrentObjectPorted.AddForce(new Vector3(transform.forward.x, transform.forward.y, transform.forward.z) * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
-        currentObjectPorted.GetComponent<Player>().animator.SetBool("idle", true);
+        if (currentObjectPorted.GetComponent<Player>())
+            currentObjectPorted.GetComponent<Player>().animator.SetBool("idle", true);
         currentObjectPorted = null;
         animator.SetTrigger("porter");
     }
