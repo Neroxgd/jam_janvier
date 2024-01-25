@@ -136,13 +136,13 @@ public class Player : MonoBehaviour
     {
         StartCoroutine(Stun(this, 0.3f, false));
         animator.SetTrigger("porter");
-        currentObjectPorted = hit.transform;
-        if (ifPlayer)
-            currentObjectPorted.GetComponent<ObjectPortable>().Porter(this);
-        else
-            currentObjectPorted.GetComponent<Player>().SeFairePorter(this);
         notThrow = false;
-        yield return new WaitForSeconds(0.3f);
+        if (ifPlayer)
+            hit.transform.GetComponent<Player>().SeFairePorter(this);
+        else
+            hit.transform.GetComponent<ObjectPortable>().Porter(this);
+        yield return 0;
+        currentObjectPorted = hit.transform;
         currentSpeed = speedPorteObject;
     }
 
