@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
     private Rigidbody rbPlayer;
-    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f;
+    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f, rayonGuilli = 0.25f, rayonGrab = 0.25f, distancegrab = 1f, distanceGuilli = 1f;
     private bool stun;
     [SerializeField] private uint nombreDebattre = 10;
     private int compteurNbDebattre;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask layerGround;
     [SerializeField] private Image chatouilleBarre;
     private bool notThrow;
-    [SerializeField] private GameObject winScreen, grabUI;
+    [SerializeField] private GameObject winScreen, grabUI, debattreUI;
     private Humain humain;
     private Animator animator;
     private bool isChatouilling;
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         if (isChatouilling)
         {
             RaycastHit hitChatouille;
-            if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hitChatouille, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
+            if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hitChatouille, transform.rotation, 1f) && hitChatouille.transform.GetComponent<Player>() && hitChatouille.transform != this)
             {
                 hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
                 if (hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount >= 1f)
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
         if (!context.started || currentObjectPorted != null || stun || currentSpeed == speedGuilli) return;
         notThrow = true;
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.25f, transform.forward, out hit, 1f))
+        if (Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hit, transform.rotation, 1f))
         {
             if (hit.transform.GetComponent<ObjectPortable>())
                 StartCoroutine(WaitPorter(hit, false));
@@ -102,10 +102,21 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField] private bool guizmosGrab;
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position, 0.1f);
-        Gizmos.DrawSphere(transform.position + transform.forward * 0.75f, 0.1f);
+        if (guizmosGrab)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(transform.position, new Vector3(rayonGuilli, 1f, 0.1f));
+            Gizmos.DrawCube(transform.position + transform.forward * distanceGuilli, new Vector3(rayonGuilli, 1f, 0.1f));
+        }
+        else
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawCube(transform.position, new Vector3(rayonGuilli, 1f, 0.1f));
+            Gizmos.DrawCube(transform.position + transform.forward * distancegrab, new Vector3(rayonGrab, 1f, 0.1f));
+        }
     }
 
     public void Jeter(InputAction.CallbackContext context)
@@ -118,7 +129,10 @@ public class Player : MonoBehaviour
         currentObjectPorted.transform.parent = null;
         rbCurrentObjectPorted.AddForce(new Vector3(transform.forward.x, transform.forward.y, transform.forward.z) * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
         if (currentObjectPorted.GetComponent<Player>())
+        {
+            currentObjectPorted.GetComponent<Player>().debattreUI.SetActive(false);
             currentObjectPorted.GetComponent<Player>().animator.SetBool("idle", true);
+        }
         currentObjectPorted = null;
         animator.SetTrigger("porter");
     }
@@ -142,11 +156,12 @@ public class Player : MonoBehaviour
 
     private void SeFairePorter(Player player)
     {
-        transform.DOMove(player.transform.position + Vector3.up * 1.6f, 0.1f)
-        .OnComplete(() => transform.position = player.transform.position + Vector3.up * 1.6f);
+        transform.DOMove(player.transform.position + Vector3.up * 1.8f, 0.1f)
+        .OnComplete(() => transform.position = player.transform.position + Vector3.up * 1.8f);
         rbPlayer.isKinematic = true;
         compteurNbDebattre = (int)nombreDebattre;
         transform.parent = player.transform;
+        debattreUI.SetActive(true);
         animator.SetBool("idle", false);
         animator.SetBool("stunPorter", true);
     }
@@ -191,7 +206,7 @@ public class Player : MonoBehaviour
     private void GrabUI()
     {
         RaycastHit hit;
-        if (currentSpeed != speedPorteObject && Physics.SphereCast(transform.position, 0.25f, transform.forward, out hit, 1f) && hit.transform.GetComponent<ObjectPortable>())
+        if (currentSpeed != speedPorteObject && Physics.BoxCast(transform.position, new Vector3(rayonGuilli, 1f, 0.1f), transform.forward, out hit, transform.rotation, 1f) && (hit.transform.GetComponent<ObjectPortable>() || hit.transform.GetComponent<Player>()))
         {
             grabUI.SetActive(true);
             grabUI.GetComponentInChildren<TextMeshProUGUI>().text = "Grab";
@@ -214,6 +229,14 @@ public class Player : MonoBehaviour
         if (compteurNbDebattre <= 0)
         {
             DOTween.Kill("shake");
+            debattreUI.SetActive(false);
+
+            Player player = transform.parent.GetComponent<Player>();
+            player.grabUI.SetActive(false);
+            player.currentSpeed = speed;
+            player.animator.SetTrigger("porter");
+            player.currentObjectPorted = null;
+
             transform.parent = null;
             rbPlayer.isKinematic = false;
             animator.SetBool("idle", true);
