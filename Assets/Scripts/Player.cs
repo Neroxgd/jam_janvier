@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject winScreen, grabUI, debattreUI;
     private Humain humain;
     private Animator animator;
+    private AudioSource runSound;
     private bool isChatouilling;
     private Transform currentObjectPorted;
     private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.25f, 0.1f, 0.25f), Vector3.down, out groundHit, transform.rotation, 0.75f, layerGround);
@@ -32,6 +33,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        runSound = GetComponent<AudioSource>();
+        runSound.clip = seDeplacer;
         animator = GetComponentInChildren<Animator>();
         currentSpeed = speed;
         rbPlayer = GetComponent<Rigidbody>();
@@ -42,13 +45,16 @@ public class Player : MonoBehaviour
     public void Deplacement(InputAction.CallbackContext context)
     {
         if (stun) return;
-        AudioManager.Instance.PlaySound(seDeplacer);
+        runSound.Play();
         direction = context.ReadValue<Vector2>();
         animator.SetBool("course", true);
         if (context.performed)
             currentRotation = new Vector3(direction.x, 0, direction.y);
         else if (context.canceled)
+        {
+            runSound.Stop();
             animator.SetBool("course", false);
+        }
 
     }
 
@@ -121,7 +127,7 @@ public class Player : MonoBehaviour
         else
         {
             Gizmos.color = Color.white;
-            Gizmos.DrawCube(transform.position, new Vector3(rayonGuilli, 1f, 0.1f));
+            Gizmos.DrawCube(transform.position, new Vector3(rayonGrab, 1f, 0.1f));
             Gizmos.DrawCube(transform.position + transform.forward * distancegrab, new Vector3(rayonGrab, 1f, 0.1f));
         }
     }
