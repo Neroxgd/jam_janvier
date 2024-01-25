@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeFadeChangeMusic: 0
+  volume: 0.5
 --- !u!82 &8372093217608343884
 AudioSource:
   m_ObjectHideFlags: 0

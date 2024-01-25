@@ -7,7 +7,7 @@ namespace Aurinaxtailer
     {
         public static AudioManager Instance { get; private set; }
 
-        [SerializeField] private float timeFadeChangeMusic;
+        [SerializeField] private float timeFadeChangeMusic, volume = 0.5f;
         private AudioSource audioSource;
 
         void Awake()
@@ -41,7 +41,7 @@ namespace Aurinaxtailer
                 {
                     audioSource.clip = audioClip;
                     audioSource.Play();
-                    audioSource.DOFade(0.5f, timeFadeChangeMusic);
+                    audioSource.DOFade(volume, timeFadeChangeMusic);
                 });
         }
 

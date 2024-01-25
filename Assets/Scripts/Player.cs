@@ -210,8 +210,10 @@ public class Player : MonoBehaviour
         if (isStun)
         {
             AudioManager.Instance.PlaySound(stunSound);
+            direction = Vector3.zero;
             stun = true;
             animator.SetTrigger("stun");
+            runSound.Stop();
             animator.SetBool("course", false);
         }
         player.enabled = false;
