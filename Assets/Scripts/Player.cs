@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
     private Rigidbody rbPlayer;
-    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f, rayonGuilli = 0.25f, rayonGrab = 0.25f, distancegrab = 1f, distanceGuilli = 1f, TPsave = -5f;
+    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f, rayonGuilli = 0.25f, rayonGrab = 0.25f, distancegrab = 1f, distanceGuilli = 1f, groundFriction = 0.1f;
     private bool stun;
     [SerializeField] private uint nombreDebattre = 10;
     private int compteurNbDebattre;
@@ -28,11 +28,13 @@ public class Player : MonoBehaviour
     private AudioSource runSound;
     private bool isChatouilling;
     private Transform currentObjectPorted;
+    private PlayerInput playerInput;
     private bool IsGrounded => Physics.BoxCast(transform.position, new Vector3(0.25f, 0.1f, 0.25f), Vector3.down, out groundHit, transform.rotation, 0.75f, layerGround);
     [SerializeField] private AudioClip menuLose, humainEnd, porter, seDeplacer, jeter, stunSound, jump, seFaireChatouiller, seDebattre;
 
     private void Start()
     {
+        playerInput = GetComponent<PlayerInput>();
         runSound = GetComponent<AudioSource>();
         runSound.clip = seDeplacer;
         animator = GetComponentInChildren<Animator>();
@@ -55,7 +57,6 @@ public class Player : MonoBehaviour
             runSound.Stop();
             animator.SetBool("course", false);
         }
-
     }
 
     private void Update()
@@ -69,14 +70,12 @@ public class Player : MonoBehaviour
                 hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount += chatouillePower / 10f * Time.deltaTime;
                 if (hitChatouille.transform.GetComponent<Player>().chatouilleBarre.fillAmount >= 1f)
                 {
-                    this.enabled = false;
+                    playerInput.enabled = false;
                     StartCoroutine(WaitEndGame(hitChatouille));
                 }
             }
         }
         chatouilleBarre.fillAmount -= chatouilleCalme / 10f * Time.deltaTime;
-        if (transform.position.y < TPsave)
-            transform.position = new Vector3(4.3f, 1.7f, -3.5f);
     }
 
     private IEnumerator WaitEndGame(RaycastHit hitChatouille)
@@ -86,12 +85,15 @@ public class Player : MonoBehaviour
         AudioManager.Instance.StopMusic();
         yield return new WaitForSeconds(1.5f);
         AudioManager.Instance.PlayMusic(menuLose);
-        hitChatouille.transform.GetComponent<Player>().enabled = false;
+        hitChatouille.transform.GetComponent<Player>().playerInput.enabled = false;
         winScreen.SetActive(true);
     }
 
     private void FixedUpdate()
     {
+        if (IsGrounded)
+            rbPlayer.velocity = new Vector3(Mathf.Lerp(rbPlayer.velocity.x, 0, groundFriction), rbPlayer.velocity.y, Mathf.Lerp(rbPlayer.velocity.z, 0, groundFriction));
+        if (!playerInput.enabled) return;
         rbPlayer.velocity = new Vector3(direction.x * currentSpeed, rbPlayer.velocity.y, direction.y * currentSpeed);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentRotation), 0.2f);
     }
@@ -110,7 +112,7 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         if (Physics.BoxCast(transform.position, new Vector3(rayonGrab, 1f, 0.1f), transform.forward, out hit, transform.rotation, distancegrab))
         {
-            if (hit.transform.GetComponent<ObjectPortable>())
+            if (hit.transform.GetComponent<ObjectPortable>() && !hit.transform.GetComponent<Rigidbody>().isKinematic)
                 StartCoroutine(WaitPorter(hit, false));
             else if (hit.transform.GetComponent<Player>() && hit.transform != this)
                 StartCoroutine(WaitPorter(hit, true));
@@ -142,7 +144,7 @@ public class Player : MonoBehaviour
         StartCoroutine(Stun(currentObjectPorted.GetComponent<Player>(), 1f, false));
         rbCurrentObjectPorted.isKinematic = false;
         currentObjectPorted.transform.parent = null;
-        rbCurrentObjectPorted.AddForce(new Vector3(transform.forward.x, transform.forward.y, transform.forward.z) * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
+        rbCurrentObjectPorted.AddForce(transform.forward * throwForce * rbCurrentObjectPorted.mass, ForceMode.Impulse);
         if (currentObjectPorted.GetComponent<Player>())
         {
             currentObjectPorted.GetComponent<Player>().debattreUI.SetActive(false);
@@ -206,11 +208,11 @@ public class Player : MonoBehaviour
         {
             currentObjectPorted.transform.parent = null;
             currentObjectPorted.GetComponent<Rigidbody>().isKinematic = false;
-            currentObjectPorted = null;
             currentSpeed = speed;
         }
         if (isStun)
         {
+            currentObjectPorted = null;
             AudioManager.Instance.PlaySound(stunSound);
             direction = Vector3.zero;
             stun = true;
@@ -218,11 +220,11 @@ public class Player : MonoBehaviour
             runSound.Stop();
             animator.SetBool("course", false);
         }
-        player.enabled = false;
+        player.playerInput.enabled = false;
         yield return new WaitForSeconds(timeStun);
         if (isStun)
             stun = false;
-        player.enabled = true;
+        player.playerInput.enabled = true;
     }
 
     private void GrabUI()
