@@ -2011,6 +2011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf19d8459a5cf4ca624b00f8cfe847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPsave: -5
 --- !u!54 &346719530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2037,7 +2038,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &346719533
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3324,6 +3325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf19d8459a5cf4ca624b00f8cfe847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPsave: 5
 --- !u!54 &615053351
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3562,9 +3564,19 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 1e579b426dded6b41b684473200437fe, type: 3}
     - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
+      propertyPath: TPsave
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
       propertyPath: grabUI
       value: 
       objectReference: {fileID: 236656678}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: rayonGrab
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: winScreen
@@ -3590,6 +3602,16 @@ PrefabInstance:
       propertyPath: otherPlayer
       value: 
       objectReference: {fileID: 2058502254}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: rayonGuilli
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
+        type: 3}
+      propertyPath: distanceGuilli
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8869344335908162825, guid: def6c347db22d4347b9578a74081e2fc,
         type: 3}
       propertyPath: stunTimeObject
@@ -4473,6 +4495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf19d8459a5cf4ca624b00f8cfe847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPsave: -5
 --- !u!54 &826768166
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4499,7 +4522,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &826768169
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6181,6 +6204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf19d8459a5cf4ca624b00f8cfe847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPsave: -5
 --- !u!54 &1121821789
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6207,7 +6231,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &1121821793
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7986,6 +8010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf19d8459a5cf4ca624b00f8cfe847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPsave: -5
 --- !u!54 &1444195823
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8012,7 +8037,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &1444195826 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6015786635081680907, guid: 5c1602b3a9e697e4b881ada005a326e3,
@@ -11190,9 +11215,19 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 1e579b426dded6b41b684473200437fe, type: 3}
     - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
+      propertyPath: TPsave
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
       propertyPath: grabUI
       value: 
       objectReference: {fileID: 1230360885}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: rayonGrab
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
       propertyPath: winScreen
@@ -11221,7 +11256,12 @@ PrefabInstance:
     - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}
       propertyPath: rayonGuilli
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
+        type: 3}
+      propertyPath: distanceGuilli
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 8869344335908162825, guid: 0a0300282133c3345baf58bccf588114,
         type: 3}

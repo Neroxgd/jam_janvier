@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
     private Rigidbody rbPlayer;
-    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f, rayonGuilli = 0.25f, rayonGrab = 0.25f, distancegrab = 1f, distanceGuilli = 1f;
+    [SerializeField] private float speed = 1f, speedPorteObject = 0.5f, speedGuilli = 0.9f, jumpForce = 1f, gravityForce = 1f, throwForce = 3f, chatouillePower = 1f, chatouilleCalme = 0.1f, stunTimeObject = 1f, rayonGuilli = 0.25f, rayonGrab = 0.25f, distancegrab = 1f, distanceGuilli = 1f, TPsave = -5f;
     private bool stun;
     [SerializeField] private uint nombreDebattre = 10;
     private int compteurNbDebattre;
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
             }
         }
         chatouilleBarre.fillAmount -= chatouilleCalme / 10f * Time.deltaTime;
-        if (transform.position.y < -3f)
+        if (transform.position.y < TPsave)
             transform.position = new Vector3(4.3f, 1.7f, -3.5f);
     }
 
